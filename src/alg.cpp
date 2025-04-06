@@ -52,9 +52,9 @@ int countPairs3(int *arr, int len, int value) {
         }
         break;
       } else if (arr[mid] < x) {
-	  left = mid + 1;
+          left = mid + 1;
       } else {
-	  right = mid - 1;
+          right = mid - 1;
       }
     }
   }
