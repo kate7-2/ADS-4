@@ -2,28 +2,51 @@
 int countPairs1(int *arr, int len, int value) {
   int n = 0;
   for (int i = 0; i < len; i++) {
-    for (int j = i+1; j < len; j++) {
-      if (arr[i] + arr[j] == value) {
-        n++;
+    if (i == 0 || arr[i] != arr[i - 1]) {
+      for (int j = i + 1; j < len; j++) {
+        if (arr[i] + arr[j] == value) {
+          n++;
+          while (j + 1 < len && arr[j] == arr[j + 1]) {
+            j++;
+          }
+        }
       }
     }
   }
   return n;
 }
+
 int countPairs2(int *arr, int len, int value) {
   int k = 0;
   int leftIndex = 0;
   int rightIndex = len - 1;
   while (leftIndex < rightIndex) {
-      int sum = arr[leftIndex] + arr[rightIndex];
-      if (sum == value) {
-          k++;
-          leftIndex++;
-      } else if (sum < value) {
-          leftIndex++;
-        } else {
-          rightIndex--;
+    int sum = arr[leftIndex] + arr[rightIndex];
+    if (sum == value) {
+      if (arr[leftIndex] == arr[rightIndex]) {
+        int cnt = rightIndex - leftIndex + 1;
+        k += cnt * (cnt - 1) / 2;
+        break;
       }
+      int leftCnt = 1, rightCnt = 1;
+      while (leftIndex+1 < rightIndex && arr[leftIndex] == arr[leftIndex+1]) {
+        leftCnt++;
+        leftIndex++;
+      }
+      while (rightIndex-1 > leftIndex && arr[rightIndex] == arr[rightIndex-1]) {
+        rightCnt++;
+        rightIndex--;
+      }
+      k += leftCnt * rightCnt;
+      leftIndex++;
+      rightIndex--;
+    }
+    else if (sum < value) {
+      leftIndex++;
+    }
+    else {
+      rightIndex--;
+    }
   }
   return k;
 }
